@@ -3,6 +3,8 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
 from reportlab.lib import colors
+from reportlab.graphics.barcode import qr
+from reportlab.graphics.shapes import Drawing
 
 # Output PDF
 output_pdf = "GreenLeaf_Professional_Flyer.pdf"
@@ -102,6 +104,16 @@ contact_info = """
 <b>Location:</b> Perth, Western Australia
 """
 story.append(Paragraph(contact_info, contact_style))
+story.append(Spacer(1, 0.3*inch))
+
+# QR code linking to website
+qr_widget = qr.QrCodeWidget('https://www.greenleafingredients.com.au')
+bounds = qr_widget.getBounds()
+qr_width = bounds[2] - bounds[0]
+qr_height = bounds[3] - bounds[1]
+d = Drawing(1.5*inch, 1.5*inch)
+d.add(qr_widget)
+story.append(d)
 story.append(Spacer(1, 0.3*inch))
 
 # Call to Action
