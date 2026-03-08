@@ -34,7 +34,7 @@ text_line2 = "explore our"
 text_line3 = "catalogue"
 
 # Try to use bold/thick font to match flyer style
-font_size = 32
+font_size = 30
 try:
     # Try Segoe UI Bold first (more modern)
     font = ImageFont.truetype("seguib.ttf", font_size)
