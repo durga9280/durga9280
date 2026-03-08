@@ -17,7 +17,7 @@ qr_img = qr_img.resize((qr_size, qr_size))
 base = Image.open(input_image).convert("RGB")
 
 # Position QR code at right side, moved upward to avoid hiding text
-margin_bottom = 300
+margin_bottom = 250
 margin_right = 50
 
 # Position at bottom right
@@ -27,7 +27,7 @@ y = base.height - qr_size - margin_bottom
 # Paste QR code
 base.paste(qr_img, (x, y))
 
-# Add text below the QR code
+# Add text above the QR code
 draw = ImageDraw.Draw(base)
 text = "Scan to explore our catalogue"
 
@@ -47,14 +47,14 @@ except:
         except:
             font = ImageFont.load_default()
 
-# Calculate text position (below QR code on the right)
+# Calculate text position (above QR code on the right)
 text_bbox = draw.textbbox((0, 0), text, font=font)
 text_width = text_bbox[2] - text_bbox[0]
 text_height = text_bbox[3] - text_bbox[1]
 
-# Position text below the QR code, right-aligned
+# Position text above the QR code, right-aligned with QR
 text_x = x + (qr_size - text_width) // 2
-text_y = y + qr_size + 10
+text_y = y - text_height - 10
 
 # Draw text in dark color with semi-bold appearance
 draw.text((text_x, text_y), text, fill=(0, 0, 0), font=font)
