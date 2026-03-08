@@ -34,20 +34,28 @@ text_line2 = "explore our"
 text_line3 = "catalogue"
 
 # Try to use bold/thick font to match flyer style
-font_size = 36
+font_size = 32
 try:
-    # Try bold Arial first
-    font = ImageFont.truetype("arialbd.ttf", font_size)
+    # Try Segoe UI Bold first (more modern)
+    font = ImageFont.truetype("seguib.ttf", font_size)
 except:
     try:
-        # Try regular Arial with larger size
-        font = ImageFont.truetype("arial.ttf", font_size)
+        # Try Verdana Bold
+        font = ImageFont.truetype("verdanab.ttf", font_size)
     except:
         try:
             # Try Calibri Bold
             font = ImageFont.truetype("calibrib.ttf", font_size)
         except:
-            font = ImageFont.load_default()
+            try:
+                # Try bold Arial
+                font = ImageFont.truetype("arialbd.ttf", font_size)
+            except:
+                try:
+                    # Try regular Arial with larger size
+                    font = ImageFont.truetype("arial.ttf", font_size)
+                except:
+                    font = ImageFont.load_default()
 
 # Calculate text position for multiple lines (above QR code on the right)
 text_bbox1 = draw.textbbox((0, 0), text_line1, font=font)
@@ -58,29 +66,21 @@ text_height = text_bbox1[3] - text_bbox1[1]
 line_spacing = 5
 total_text_height = (text_height * 3) + (line_spacing * 2)
 
-text_x1 = x + (qr_size - text_width1) // 2
-text_y1 = y - total_text_height - 10
-
 text_bbox2 = draw.textbbox((0, 0), text_line2, font=font)
 text_width2 = text_bbox2[2] - text_bbox2[0]
-text_x2 = x + (qr_size - text_width2) // 2
-text_y2 = text_y1 + text_height + line_spacing
 
 text_bbox3 = draw.textbbox((0, 0), text_line3, font=font)
 text_width3 = text_bbox3[2] - text_bbox3[0]
-text_x3 = x + (qr_size - text_width3) // 2
-text_y3 = text_y2 + text_height + line_spacing
 
-# Find the bounding box for all 3 lines of text to draw background
-max_text_width = max(text_width1, text_width2, text_width3)
-box_padding = 10
-box_left = x + (qr_size - max_text_width) // 2 - box_padding
-box_top = text_y1 - box_padding
-box_right = box_left + max_text_width + (box_padding * 2)
-box_bottom = text_y3 + text_height + box_padding
+# Align background with QR code boundaries
+box_padding = 8
+box_left = x
+box_right = x + qr_size
+box_top = y - total_text_height - (box_padding * 2)
+box_bottom = y
 
 # Create a background with semi-transparent white
-background_color = (255, 255, 255, 180)  # White with transparency
+background_color = (255, 255, 255, 190)  # White with slight transparency
 
 # Draw semi-transparent background rectangle
 overlay_bg = Image.new("RGBA", base.size, (0, 0, 0, 0))
@@ -92,6 +92,16 @@ base = Image.alpha_composite(base.convert("RGBA"), overlay_bg).convert("RGB")
 
 # Redraw the text on top of the background
 draw = ImageDraw.Draw(base)
+
+# Recalculate text positions to center within the background box
+text_x1 = box_left + (qr_size - text_width1) // 2
+text_y1 = box_top + box_padding
+
+text_x2 = box_left + (qr_size - text_width2) // 2
+text_y2 = text_y1 + text_height + line_spacing
+
+text_x3 = box_left + (qr_size - text_width3) // 2
+text_y3 = text_y2 + text_height + line_spacing
 
 # Draw text in dark color with semi-bold appearance
 draw.text((text_x1, text_y1), text_line1, fill=(0, 0, 0), font=font)
