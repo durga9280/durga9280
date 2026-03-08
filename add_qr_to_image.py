@@ -9,8 +9,8 @@ output_image = "Greenleaf ingredient flyer - A4 size_with_qr.png"
 url = "https://www.greenleafingredients.com.au"
 qr_img = qrcode.make(url)
 
-# Resize qr code to appropriate size (e.g., 300x300 pixels)
-qr_size = 300
+# Resize qr code to appropriate size (e.g., 200x200 pixels)
+qr_size = 200
 qr_img = qr_img.resize((qr_size, qr_size))
 
 # Open original image
