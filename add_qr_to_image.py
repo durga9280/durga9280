@@ -2,8 +2,8 @@ from PIL import Image
 import qrcode
 
 # Paths
-input_image = "ChatGPT Image Mar 6, 2026, 12_03_21 AM.png"
-output_image = "ChatGPT Image Mar 6, 2026, 12_03_21 AM_with_qr.png"
+input_image = "Greenleaf ingredient flyer - A4 size.png"
+output_image = "Greenleaf ingredient flyer - A4 size_with_qr.png"
 
 # Generate QR code
 url = "https://www.greenleafingredients.com.au"
@@ -16,12 +16,12 @@ qr_img = qr_img.resize((qr_size, qr_size))
 # Open original image
 base = Image.open(input_image).convert("RGBA")
 
-# Position QR code at bottom right with some margin
+# Position QR code at top right with some margin
 overlay = Image.new("RGBA", base.size)
 
 margin = 50
 x = base.width - qr_size - margin
-y = base.height - qr_size - margin
+y = margin
 
 overlay.paste(qr_img, (x, y))
 
