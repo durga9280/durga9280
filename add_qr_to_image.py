@@ -16,8 +16,8 @@ qr_img = qr_img.resize((qr_size, qr_size))
 # Open original image
 base = Image.open(input_image).convert("RGB")
 
-# Position QR code at bottom right with some margin
-margin_bottom = 50
+# Position QR code at right side, moved upward to avoid hiding text
+margin_bottom = 300
 margin_right = 50
 
 # Position at bottom right
