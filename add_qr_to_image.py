@@ -17,7 +17,7 @@ qr_img = qr_img.resize((qr_size, qr_size))
 base = Image.open(input_image).convert("RGB")
 
 # Position QR code at right side, moved upward to avoid hiding text
-margin_bottom = 250
+margin_bottom = 200
 margin_right = 50
 
 # Position at bottom right
@@ -32,7 +32,7 @@ draw = ImageDraw.Draw(base)
 text = "Scan to explore our catalogue"
 
 # Try to use bold/thick font to match flyer style
-font_size = 18
+font_size = 36
 try:
     # Try bold Arial first
     font = ImageFont.truetype("arialbd.ttf", font_size)
