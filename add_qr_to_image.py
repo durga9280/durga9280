@@ -16,12 +16,12 @@ qr_img = qr_img.resize((qr_size, qr_size))
 # Open original image
 base = Image.open(input_image).convert("RGB")
 
-# Position QR code at bottom center with some margin
-margin_bottom = 80
-margin_x = 50
+# Position QR code at bottom right with some margin
+margin_bottom = 50
+margin_right = 50
 
-# Center horizontally, position at bottom
-x = (base.width - qr_size) // 2
+# Position at bottom right
+x = base.width - qr_size - margin_right
 y = base.height - qr_size - margin_bottom
 
 # Paste QR code
@@ -31,19 +31,32 @@ base.paste(qr_img, (x, y))
 draw = ImageDraw.Draw(base)
 text = "Scan to explore our catalogue"
 
-# Try to use a nice font, fallback to default if not available
+# Try to use bold/thick font to match flyer style
+font_size = 18
 try:
-    font = ImageFont.truetype("arial.ttf", 20)
+    # Try bold Arial first
+    font = ImageFont.truetype("arialbd.ttf", font_size)
 except:
-    font = ImageFont.load_default()
+    try:
+        # Try regular Arial with larger size
+        font = ImageFont.truetype("arial.ttf", font_size)
+    except:
+        try:
+            # Try Calibri Bold
+            font = ImageFont.truetype("calibrib.ttf", font_size)
+        except:
+            font = ImageFont.load_default()
 
-# Calculate text position (centered below QR code)
+# Calculate text position (below QR code on the right)
 text_bbox = draw.textbbox((0, 0), text, font=font)
 text_width = text_bbox[2] - text_bbox[0]
-text_x = (base.width - text_width) // 2
-text_y = y + qr_size + 15
+text_height = text_bbox[3] - text_bbox[1]
 
-# Draw text in dark color
+# Position text below the QR code, right-aligned
+text_x = x + (qr_size - text_width) // 2
+text_y = y + qr_size + 10
+
+# Draw text in dark color with semi-bold appearance
 draw.text((text_x, text_y), text, fill=(0, 0, 0), font=font)
 
 # Save the image
