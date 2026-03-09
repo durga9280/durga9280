@@ -18,12 +18,12 @@ qr_img = qrcode.make(url)
 qr_size = 180
 qr_img = qr_img.resize((qr_size, qr_size))
 
-# Position QR code at bottom left with margin
+# Position QR code at bottom right with margin
 margin = 40
-x = margin
+x = width - qr_size - margin
 y = height - qr_size - margin
 
-print(f"Placing QR code at bottom left: x={x}, y={y}")
+print(f"Placing QR code at bottom right: x={x}, y={y}")
 
 # Paste QR code
 base.paste(qr_img, (x, y))
